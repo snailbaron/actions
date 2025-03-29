@@ -22,6 +22,7 @@ jobs:
           pushd this
           deps=$(bazel mod deps)
           popd
+          echo "bazel mod deps returned: '$deps'"
 
           deps="${deps#*\(}"
           deps="${deps%\)*}"
@@ -43,6 +44,9 @@ jobs:
               "commit": "$current_commit"
           }
           END
+
+          git -C registry config user.name "snailbaron's bot"
+          git -C registry config user.email "snailbaron@gmail.com"
 
           git -C registry add .
           git -C registry commit -m "Update $module_name:$module_version"
