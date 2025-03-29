@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Publish to Registry
+
+on:
+  workflow_call:
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout This Repo
+        uses: actions/checkout@v4
+        with:
+          path: this
+      - name: Checkout Registry
+        uses: actions/checkout@v4
+        with:
+          repository: https://github.com/snailbaron/registry.git
+          path: registry
+      - name: Extract module name and version
+        run: |
+          deps=$(bazel mod deps)
+          deps="${deps#*\(}"
+          deps="${deps%\)*}"
+
+          module_name="${deps%@*}"
+          module_version="${deps#*@}"
+
+          this_remote=$(git -C this config remote.origin.url)
+          this_last_commit=$(git -C this rev-parse HEAD)
+
+          module_registry_dir = "registry/modules/$module_name/$module_version"
+
+          cp this/MODULE.bazel "$module_registry_dir/MODULE.bazel"
+          cat > "$module_registry_dir/source.json" <<END
+          {
+              "type": "git_repository",
+              "remote": "$this_remote",
+              "commit": "$current_commit"
+          }
+          END
+
+          git -C registry add .
+          git -C registry commit -m "Update $module_name:$module_version"
+          git -C registry push
