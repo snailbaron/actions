@@ -26,7 +26,7 @@ jobs:
           pushd this
           deps=$(bazel mod deps)
           popd
-          echo "bazel mod deps returned: '$deps'"
+          echo "bazel mod deps: '$deps'"
 
           deps="${deps#*\(}"
           deps="${deps%\)*}"
@@ -36,6 +36,9 @@ jobs:
 
           this_remote=$(git -C this config remote.origin.url)
           this_last_commit=$(git -C this rev-parse origin/main)
+
+          echo "current repository remote: $this_remote"
+          echo "current repository commit: $this_last_commit"
 
           module_registry_dir="registry/modules/$module_name/$module_version"
           mkdir -p "$module_registry_dir"
@@ -48,9 +51,6 @@ jobs:
               "commit": "$current_commit"
           }
           END
-
-          echo "registry repo's remote:"
-          git -C registry remote -v
 
           git -C registry config user.name "snailbaron's bot"
           git -C registry config user.email "snailbaron@gmail.com"
