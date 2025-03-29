@@ -15,7 +15,7 @@ jobs:
       - name: Checkout Registry
         uses: actions/checkout@v4
         with:
-          repository: https://github.com/snailbaron/registry.git
+          repository: snailbaron/registry
           path: registry
       - name: Extract module name and version
         run: |
