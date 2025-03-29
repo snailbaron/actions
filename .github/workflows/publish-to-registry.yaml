@@ -21,7 +21,7 @@ jobs:
           repository: snailbaron/registry
           path: registry
           token: ${{ secrets.token }}
-      - name: Extract module name and version
+      - name: Update Registry
         run: |
           pushd this
           deps=$(bazel mod deps)
