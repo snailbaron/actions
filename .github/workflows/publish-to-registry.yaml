@@ -32,7 +32,7 @@ jobs:
           this_remote=$(git -C this config remote.origin.url)
           this_last_commit=$(git -C this rev-parse HEAD)
 
-          module_registry_dir = "registry/modules/$module_name/$module_version"
+          module_registry_dir="registry/modules/$module_name/$module_version"
 
           cp this/MODULE.bazel "$module_registry_dir/MODULE.bazel"
           cat > "$module_registry_dir/source.json" <<END
