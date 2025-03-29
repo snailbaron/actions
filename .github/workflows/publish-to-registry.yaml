@@ -51,8 +51,8 @@ jobs:
               "commit": "$current_commit"
           }
           END
-          echo "writing to $module_registry_dir/MODULE.bazel:"
-          cat "$module_registry_dir/MODULE.bazel"
+          echo "written $module_registry_dir/source.json"
+          cat "$module_registry_dir/source.json"
 
           git -C registry config user.name "snailbaron's bot"
           git -C registry config user.email "snailbaron@gmail.com"
