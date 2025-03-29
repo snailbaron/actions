@@ -19,7 +19,10 @@ jobs:
           path: registry
       - name: Extract module name and version
         run: |
+          pushd this
           deps=$(bazel mod deps)
+          popd
+
           deps="${deps#*\(}"
           deps="${deps%\)*}"
 
